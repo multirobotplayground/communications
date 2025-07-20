@@ -24,7 +24,7 @@
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "std_srvs/srv/trigger.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "comm_msgs/msg/occupancy_grid_comm_event.hpp"
+#include "comm_msgs/msg/comm_event.hpp"
 #include "tf2/LinearMath/Transform.hpp"
 #include <boost/algorithm/string.hpp>
 
@@ -85,14 +85,14 @@ class TemplateNode : public rclcpp::Node {
                                 switch(comm_status->at(poses_index)) {
                                     case NO_COMM:
                                         if(distance <= (*comm_dist)) {
-                                            comm_status->at(poses_index) = IN_COMM;
                                             this->EstablishedConnectionCallback(i);
+                                            comm_status->at(poses_index) = IN_COMM;
                                         }
                                     break;
                                     case IN_COMM:
                                         if(distance > (*comm_dist)) {
-                                            comm_status->at(poses_index) = NO_COMM;
                                             this->DisconnectCallback(i);
+                                            comm_status->at(poses_index) = NO_COMM;
                                         }
                                     break;
                                 }
@@ -101,16 +101,25 @@ class TemplateNode : public rclcpp::Node {
                     )
                 );
             }
+
+            aCommEvent = this->create_publisher<comm_msgs::msg::CommEvent>(aNamespace + "/comm_event", aQueueSize);
         }
 
         ~TemplateNode() {}
 
         void EstablishedConnectionCallback(const int& other_id) {
-            RCLCPP_INFO(this->get_logger(), "Established connection with robot_%d", other_id);
+            RCLCPP_INFO(get_logger(), "Connected with robot_%d", other_id);
+            comm_msgs::msg::CommEvent msg;
+            msg.host = aId;
+            msg.client = other_id;
+            std_msgs::msg::String str_msg;
+            str_msg.data = "Hey, lets talk!";
+            msg.message = str_msg;
+            aCommEvent->publish(msg);
         }
 
         void DisconnectCallback(const int& other_id) {
-            RCLCPP_INFO(this->get_logger(), "Disconnected from robot_%d", other_id);
+            RCLCPP_INFO(get_logger(), "Disconnected from robot_%d", other_id);
         }
 
         // main update function
@@ -132,7 +141,7 @@ class TemplateNode : public rclcpp::Node {
         std::vector<rclcpp::SubscriptionBase::SharedPtr> aSubscribers;
 
         // publishers must be declared, shame...
-        rclcpp::Publisher<comm_msgs::msg::OccupancyGridCommEvent>::SharedPtr aOccPub;
+        rclcpp::Publisher<comm_msgs::msg::CommEvent>::SharedPtr aCommEvent;
 
         int aRobots;
         int aId;

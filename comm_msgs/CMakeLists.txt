@@ -18,7 +18,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CommEvent.msg"
-  "msg/OccupancyGridCommEvent.msg"
+  "srv/OccTransfer.srv"
   DEPENDENCIES std_msgs nav_msgs
 )
 
