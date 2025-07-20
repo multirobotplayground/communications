@@ -3,9 +3,9 @@
 <package format="3">
   <name>comm_msgs</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="alysson.ribeiro.silva@gmail.com">ophien</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Event-based mock communication messages for ROS2 simulations and some deployments.</description>
+  <maintainer email="alysson.ribeiro.silva@gmail.com">Alysson</maintainer>
+  <license>GPL-3.0-or-later</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
