@@ -44,9 +44,9 @@ ament_target_dependencies(${PROJECT_NAME}_lib
   comm_msgs
   tf2)
 
-add_executable(mock_com_node src/MockComm.cpp)
-target_link_libraries(mock_com_node ${PROJECT_NAME}_lib)
-ament_target_dependencies(mock_com_node
+add_executable(mock_comm_node src/MockComm.cpp)
+target_link_libraries(mock_comm_node ${PROJECT_NAME}_lib)
+ament_target_dependencies(mock_comm_node
   rclcpp
   std_msgs
   geometry_msgs
@@ -57,6 +57,6 @@ ament_target_dependencies(mock_com_node
   comm_msgs
   tf2)
 
-install(TARGETS mock_com_node DESTINATION lib/${PROJECT_NAME})
+install(TARGETS mock_comm_node DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

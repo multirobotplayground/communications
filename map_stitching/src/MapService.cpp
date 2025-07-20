@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MockComm.h"
+#include "MapService.h"
 
 int main(int argc, char* argv[]) {
     rclcpp::init(argc, argv);
-    TemplateNode::SharedPtr template_node = std::make_shared<TemplateNode>();
-    rclcpp::spin(template_node);
+    MapService::SharedPtr node = std::make_shared<MapService>();
+    rclcpp::spin(node);
     rclcpp::shutdown();
-    return OK;
+    return 0;
 }
